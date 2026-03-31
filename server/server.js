@@ -8,6 +8,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
+import { initializeSockets } from "./sockets/index.js";
 
 // connect to database
 connectDB();
@@ -15,7 +16,7 @@ connectDB();
 const app = express();
 const httpServer = http.createServer(app);
 
-// socket.io setup — will attach handlers in Phase 2
+// socket.io setup
 export const io = new Server(httpServer, {
   cors: {
     origin: process.env.CLIENT_URL || "http://localhost:5173",
@@ -34,30 +35,31 @@ app.use(express.urlencoded({ extended: true }));
 
 // health check
 app.get("/api/health", (req, res) => {
-  res.json({ success: true, message: "Server is running", timestamp: new Date() });
+  res.json({
+    success: true,
+    message: "Server is running",
+    timestamp: new Date(),
+  });
 });
 
 // routes
 app.use("/api/auth", authRoutes);
-// Phase 3: app.use("/api/projects", projectRoutes);
-// Phase 4: app.use("/api/ai", aiRoutes);
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found` });
-});
-
-// global error handler — must be last
-app.use(errorHandler);
-
-// socket placeholder — Phase 2 will fill this
-io.on("connection", (socket) => {
-  console.log(`🔌 Socket connected: ${socket.id}`);
-  socket.on("disconnect", () => {
-    console.log(`❌ Socket disconnected: ${socket.id}`);
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found`,
   });
 });
 
+// global error handler
+app.use(errorHandler);
+
+// ✅ initialize all socket handlers (important change)
+initializeSockets(io);
+
+// server start
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
