@@ -9,6 +9,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import errorHandler from "./middleware/errorHandler.js";
 import { initializeSockets } from "./sockets/index.js";
+import aiRoutes from "./routes/aiRoutes.js";
 
 // connect to database
 connectDB();
@@ -44,6 +45,8 @@ app.get("/api/health", (req, res) => {
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 // 404 handler
 app.use((req, res) => {
