@@ -1,16 +1,26 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import EditorPage from './pages/EditorPage';
+
+const PrivateRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return (
+    <div className="flex items-center justify-center h-screen bg-[#1e1e1e]">
+      <div className="text-[#569cd6] text-lg animate-pulse">Loading...</div>
+    </div>
+  );
+  return user ? children : <Navigate to="/login" />;
+};
 
 const AppRoutes = () => (
   <Routes>
-    {/* The root path now goes directly to Home */}
-    <Route path="/" element={<Home />} />
-    {/* Direct room paths go straight to the Editor */}
-    <Route path="/editor/:roomId" element={<EditorPage />} />
-    {/* Any other random link redirects back to Home */}
-    <Route path="*" element={<Navigate to="/" replace />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
+    <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+    <Route path="/editor/:roomId" element={<PrivateRoute><EditorPage /></PrivateRoute>} />
   </Routes>
 );
 
