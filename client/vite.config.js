@@ -16,14 +16,14 @@ export default defineConfig({
 
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import vercel from 'vite-plugin-vercel'; // 1. Add this import
+import { vercel } from 'vite-plugin-vercel'; // <-- Add the curly braces here!
 
 export default defineConfig({
   plugins: [
     react(), 
-    vercel() // 2. Add this plugin to the array
+    vercel()
   ],
-  vercel: { // 3. Add this configuration object right here
+  vercel: {
     rewrites: [
       { source: '/(.*)', destination: '/' }
     ]
