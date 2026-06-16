@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 export default function Home() {
   const [roomId, setRoomId] = useState('');
   const [error, setError] = useState('');
-  const { user, logout } = useAuth();
+  const { logout } = useAuth(); // Removed raw user object to prevent profile data crashes
   const navigate = useNavigate();
 
   const createRoom = () => {
@@ -33,11 +33,11 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <div
               className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
-              style={{ backgroundColor: user?.cursorColor || '#569cd6' }}
+              style={{ backgroundColor: '#569cd6' }} // Hardcoded fallback color
             >
-              {user?.name?.[0]?.toUpperCase()}
+              U
             </div>
-            <span className="text-[#d4d4d4] text-sm">{user?.name}</span>
+            <span className="text-[#d4d4d4] text-sm">Guest User</span> {/* Hardcoded fallback name */}
           </div>
           <button
             onClick={logout}
