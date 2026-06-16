@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Editor from '../components/Editor';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import AIPanel from '../components/AIPanel';
 import OutputPanel from '../components/OutputPanel';
+import { useAuth } from '../context/AuthContext';
 import socket from '../services/socket';
 
 export default function EditorPage() {
   const { roomId } = useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [language, setLanguage] = useState('javascript');
   const [theme, setTheme] = useState('vs-dark');
@@ -19,14 +22,10 @@ export default function EditorPage() {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    // Hardcoded fallback guest identity so socket connection works without crashing
-    const guestUser = {
-      name: 'Guest Programmer',
-      cursorColor: '#569cd6'
-    };
+    if (!user) return navigate('/login');
 
     socket.connect();
-    socket.emit('join-room', { roomId, user: guestUser });
+    socket.emit('join-room', { roomId, user });
 
     socket.on('room-joined', ({ content, language: lang, users: roomUsers }) => {
       if (content) setCode(content);
@@ -43,7 +42,7 @@ export default function EditorPage() {
       socket.emit('leave-room', { roomId });
       socket.disconnect();
     };
-  }, [roomId]);
+  }, [roomId, user]);
 
   const handleLanguageChange = (lang) => {
     setLanguage(lang);
@@ -58,6 +57,7 @@ export default function EditorPage() {
       const originalLog = console.log;
       console.log = (...args) => logs.push(args.join(' '));
 
+      // safely evaluate JS code
       const fn = new Function(code);
       fn();
 

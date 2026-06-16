@@ -1,4 +1,4 @@
-/*import { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -26,7 +26,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-[#1e1e1e] flex items-center justify-center">
       <div className="w-full max-w-md">
-        {/* logo 
+         logo 
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
             <div className="w-8 h-8 bg-[#569cd6] rounded-lg flex items-center justify-center">
@@ -92,4 +92,4 @@ export default function Login() {
       </div>
     </div>
   );
-} */
+} 
