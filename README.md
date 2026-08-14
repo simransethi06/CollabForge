@@ -124,9 +124,7 @@ Open `http://localhost:3000`, create a room, and share the link.
 
 <img width="1882" height="773" alt="Screenshot From 2026-08-14 12-16-23" src="https://github.com/user-attachments/assets/5b87e1c6-0766-4359-a981-4fe9a27b008b" />
 <img width="1913" height="848" alt="Screenshot From 2026-08-14 12-16-37" src="https://github.com/user-attachments/assets/a8daa70d-62cc-4109-9194-893f3dac63ef" />
-
-
-><img width="1913" height="848" alt="image" src="https://github.com/user-attachments/assets/c94f093d-f6e9-425e-a824-f113b33f6f17" />![Uploading image.png…]()
+<img width="1913" height="848" alt="image" src="https://github.com/user-attachments/assets/c94f093d-f6e9-425e-a824-f113b33f6f17" />
 
 
 
